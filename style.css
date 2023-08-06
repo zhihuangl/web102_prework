@@ -21,6 +21,14 @@ body {
 
 .stats-container {
     display: flex;
+    /* You can adjust alignment as needed */
+    align-items: center;
+}
+
+/* Apply hover effect to stats-container */
+.stats-container:hover {
+    cursor: pointer;
+    box-shadow: 0 0 30px lightblue;
 }
 
 .stats-card {
