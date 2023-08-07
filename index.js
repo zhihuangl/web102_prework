@@ -89,10 +89,12 @@ function filterUnfundedOnly() {
     deleteChildElements(gamesContainer);
 
     // use filter() to get a list of games that have not yet met their goal
-
+    let unfundedList = GAMES_JSON.filter((game) => {
+        return game.pledged < game.goal; 
+    });
 
     // use the function we previously created to add the unfunded games to the DOM
-
+    addGamesToPage(unfundedList); 
 }
 
 // show only games that are fully funded
@@ -100,10 +102,12 @@ function filterFundedOnly() {
     deleteChildElements(gamesContainer);
 
     // use filter() to get a list of games that have met or exceeded their goal
+    let fundedList = GAMES_JSON.filter((game) => {
+        return game.pledged >= game.goal; 
+    });
 
-
-    // use the function we previously created to add unfunded games to the DOM
-
+    // use the function we previously created to add funded games to the DOM
+    addGamesToPage(fundedList); 
 }
 
 // show all games
@@ -111,7 +115,7 @@ function showAllGames() {
     deleteChildElements(gamesContainer);
 
     // add all games from the JSON data to the DOM
-
+    addGamesToPage(GAMES_JSON); 
 }
 
 // select each button in the "Our Games" section
@@ -120,7 +124,9 @@ const fundedBtn = document.getElementById("funded-btn");
 const allBtn = document.getElementById("all-btn");
 
 // add event listeners with the correct functions to each button
-
+unfundedBtn.addEventListener("click", filterUnfundedOnly);
+fundedBtn.addEventListener("click", filterFundedOnly);
+allBtn.addEventListener("click", showAllGames);
 
 /*************************************************************************************
  * Challenge 6: Add more information at the top of the page about the company.
@@ -131,13 +137,22 @@ const allBtn = document.getElementById("all-btn");
 const descriptionContainer = document.getElementById("description-container");
 
 // use filter or reduce to count the number of unfunded games
-
+let unfundedCount = GAMES_JSON.reduce((count, game) => {
+    if (game.pledged < game.goal) {
+        count++; 
+    }
+    return count;
+}, 0);
 
 // create a string that explains the number of unfunded games using the ternary operator
-
+let unfundedString = `A total of $${totalRaised.toLocaleString()} has been raised for ${GAMES_JSON.length} games. Currently ${unfundedCount} game${unfundedCount > 1 ? 's' : ''} remain unfunded. We need your help to fund these amazing game${unfundedCount > 1 ? 's' : ''}!`; 
 
 // create a new DOM element containing the template string and append it to the description container
+const unfundedElement = document.createElement("p");
+unfundedElement.textContent = unfundedString;
 
+// Append the new DOM element to the description container
+descriptionContainer.appendChild(unfundedElement);
 /************************************************************************************
  * Challenge 7: Select & display the top 2 games
  * Skills used: spread operator, destructuring, template literals, sort 
@@ -146,12 +161,19 @@ const descriptionContainer = document.getElementById("description-container");
 const firstGameContainer = document.getElementById("first-game");
 const secondGameContainer = document.getElementById("second-game");
 
-const sortedGames =  GAMES_JSON.sort( (item1, item2) => {
+const sortedGames = GAMES_JSON.sort((item1, item2) => {
     return item2.pledged - item1.pledged;
 });
 
 // use destructuring and the spread operator to grab the first and second games
+const [topPledgeGame, runnerUpGame, ...remainingGames] = sortedGames;
 
 // create a new element to hold the name of the top pledge game, then append it to the correct element
+const topGameNameElement = document.createElement("p");
+topGameNameElement.textContent = `${topPledgeGame.name}`;
+firstGameContainer.appendChild(topGameNameElement);
 
-// do the same for the runner up item
+// create a new element to hold the name of the runner up game, then append it to the correct element
+const runnerUpNameElement = document.createElement("p");
+runnerUpNameElement.textContent = `${runnerUpGame.name}`;
+secondGameContainer.appendChild(runnerUpNameElement);
