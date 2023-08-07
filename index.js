@@ -177,3 +177,17 @@ firstGameContainer.appendChild(topGameNameElement);
 const runnerUpNameElement = document.createElement("p");
 runnerUpNameElement.textContent = `${runnerUpGame.name}`;
 secondGameContainer.appendChild(runnerUpNameElement);
+
+const searchInput = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
+
+searchButton.addEventListener("click", () => {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const searchResults = GAMES_JSON.filter(game => game.name.toLowerCase().includes(searchTerm));
+
+    // Clear previous search results
+    deleteChildElements(gamesContainer);
+
+    // Display search results
+    addGamesToPage(searchResults);
+});

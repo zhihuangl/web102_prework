@@ -81,3 +81,24 @@ button {
     margin: 1%;
     border-radius: 7px;
 }
+
+/* Style for the search container */
+.search-container {
+    margin-top: 20px;
+    text-align: center;
+}
+  
+#search-input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+  
+#search-button {
+    padding: 6px 12px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
